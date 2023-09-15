@@ -23,9 +23,7 @@ Inject Stand's DLL into GTA V using this command-line interface. This tool allow
 
 ## Installation
 
-Check the [Releases](https://github.com/Creationsss/StandCLI/releases) page 
-
-Or if you want to build from source clone this repository.
+1. build it from source clone this repository.
 
 ```bash
 git clone https://github.com/Creationsss/StandCLI.git
