@@ -31,6 +31,10 @@ Inject Stand's DLL into GTA V using this command-line interface. This tool allow
 git clone https://github.com/Creationsss/StandCLI.git
 ```
 Compile the source code using your preferred C# compiler (e.g., Visual Studio).
+> you can use [mcs](https://linux.die.net/man/1/mcs) to compile it on linux
+```bash
+mcs -unsafe main.cs
+```
 
 Run the compiled executable as an administrator.
 
