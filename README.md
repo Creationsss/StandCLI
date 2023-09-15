@@ -7,6 +7,8 @@
 
 Inject Stand's DLL into GTA V using this command-line interface. This tool allows you to manage the injection process and interact with the game. Keep in mind that this tool is intended for educational and research purposes and should be used responsibly.
 
+> [*Stand*](https://stand.gg/)
+
 ## Features
 
 - Inject the "Stand" DLL into the GTA V game process.
