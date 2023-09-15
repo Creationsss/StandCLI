@@ -445,15 +445,50 @@ class Program
         Console.Clear();
     }
 
-    static void create_launcher(string path = "")
+    static void create_launcher(string path = "", bool user_found = true)
     {
         Console.Clear();
-        string gta_path;
+        string gta_path = "";
 
         if (path == "")
         {
-            Console.WriteLine("Enter Gta5.exe path (ex: C:\\Program Files\\Rockstar Games\\Grand Theft Auto V): ");
-            gta_path = Console.ReadLine();
+            string linuxEX = $"/home/{Environment.UserName}/.local/share/Steam/steamapps/common/Grand Theft Auto V/";
+            string windowsEX = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grand Theft Auto V";
+
+            if(Directory.Exists(linuxEX) && user_found)
+            {
+                Console.WriteLine($"Folder: {linuxEX}\n");
+                Console.WriteLine("Found a linux installation would you want to use this path? (y/n)\n");
+                string choice = Console.ReadLine().ToLower();
+                logger.Log("User chose option - " + choice);
+                if (choice == "y")
+                {
+                    gta_path = linuxEX;
+                }
+                else{
+                    create_launcher("", false);
+                    return;
+                }
+                logger.Log("User chose option - " + choice);
+            }else if(Directory.Exists(windowsEX) && user_found)
+            {
+                Console.WriteLine($"Folder: {windowsEX}\n");
+                Console.WriteLine("Found a windows installation would you want to use this path? (y/n)\n");
+                string choice = Console.ReadLine().ToLower();
+                logger.Log("User chose option - " + choice);
+                if (choice == "y")
+                {
+                    gta_path = windowsEX;
+                }else {
+                    create_launcher("", false);
+                    return;
+                }
+            }else{
+                Console.WriteLine("Enter Gta5.exe path");
+                Console.WriteLine($"Windows ex: {windowsEX}");
+                Console.WriteLine($"Linux ex: {linuxEX}\n");
+                gta_path = Console.ReadLine();
+            }
         }
         else
         {
@@ -492,7 +527,7 @@ class Program
                         create_launcher(gta_path);
                         break;
                     case "3":
-                        Console.WriteLine("Cancelled");
+                        Console.WriteLine("Cancelled\n");
                         logger.Log("Cancelled");
                         break;
                     default:
@@ -608,9 +643,12 @@ class Program
                         else
                         {
                             Console.WriteLine("\nExiting...");
-                            if (!targetProcess.HasExited && injected)
+                            if (injected)
                             {
-                                targetProcess.Kill();
+                                if (targetProcess != null)
+                                {
+                                    targetProcess.Kill();
+                                }
                             }
                             Environment.Exit(0);
                         }
@@ -619,9 +657,12 @@ class Program
                         if (stand_exists)
                         {
                             Console.WriteLine("\nExiting...");
-                            if (!targetProcess.HasExited && injected)
+                            if (injected)
                             {
-                                targetProcess.Kill();
+                                if (targetProcess != null)
+                                {
+                                    targetProcess.Kill();
+                                }
                             }
                             Environment.Exit(0);
                         }
