@@ -12,50 +12,46 @@ Inject Stand's DLL into GTA V using this command-line interface. This tool allow
 ## Features
 
 - Inject the "Stand" DLL into the GTA V game process.
-- Install and reinstall the "Stand" DLL.
-- Create a launcher for GTA V.
-- View logs and error messages.
-- Delete "Stand" files.
+- Easily install and reinstall the "Stand" DLL.
+- Create a GTA V launcher.
+- Monitor logs and error messages.
+- Remove "Stand" files.
 
 ## Prerequisites
 
 - Windows operating system.
 - .NET Framework.
-- Administrative privileges for certain operations.
+- Administrative privileges for specific operations.
 
 ## Installation
 
-1. build it from source clone this repository.
+1. Clone this repository and build it from source:
 
 ```bash
 git clone https://github.com/Creationsss/StandCLI.git
 ```
-Compile the source code using your preferred C# compiler (e.g., Visual Studio).
-> you can use [mcs](https://linux.die.net/man/1/mcs) to compile it on linux
+
+1. Compile the source code using your preferred C# compiler (e.g., Visual Studio). For Linux, you can use mcs:
 ```bash
 mcs -unsafe main.cs
 ```
 
-Run the compiled executable as an administrator.
+> Alternatively, you can use the included script for Linux to build and run it, you need dotnet installed. To run it with Wine, use the -w option:
 
+```bash
+./build.sh -w
+```
 ## Usage
-
-    Launch the tool by running the compiled executable as an administrator.
-
-    Follow the on-screen instructions to perform the desired actions:
+    Follow the on-screen instructions to perform various actions:
         Install or reinstall the "Stand" DLL.
         Inject the "Stand" DLL into the GTA V game process.
         Create a launcher for GTA V.
         View logs and error messages.
         Delete "Stand" files.
 
-    Use the tool responsibly and at your own risk, considering the potential risks associated with modifying game files and processes.
-
 ## Contributing
 
-Contributions to this project are welcome. Feel free to open issues or submit pull requests to improve the tool or add new features. For major changes, please open an issue first to discuss the proposed changes.
+Contributions to this project are highly encouraged. You are welcome to open issues or submit pull requests to enhance the tool or introduce new features. For significant changes, please initiate a discussion by opening an issue first.
 License
 
-*NOTE* This is a heavily modified version of ![StandConsoleInjector](https://github.com/larsl2005/StandConsoleInjector)
-
-Disclaimer: This tool is for educational and research purposes only. Usage of this tool may be subject to the terms of service of the game and the laws of your jurisdiction. Use it responsibly and at your own risk. The creator of this tool and the contributors are not responsible for any misuse or consequences arising from its use.
+Disclaimer: This tool is exclusively for educational and research purposes. Its usage may be subject to the game's terms of service and the laws of your jurisdiction. Please use it responsibly and at your own risk. The creator of this tool and its contributors are not accountable for any misuse or consequences arising from its usage.
