@@ -445,62 +445,80 @@ class Program
         Console.Clear();
     }
 
-    static void create_launcher(string path = "", bool user_found = true)
+    static void CreateLauncher(string path = "", bool userFound = true)
     {
         Console.Clear();
-        string gta_path = "";
+        string gtaPath = "";
 
         if (path == "")
         {
-            string linuxEX = $"/home/{Environment.UserName}/.local/share/Steam/steamapps/common/Grand Theft Auto V/";
-            string windowsEX = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grand Theft Auto V";
+            string linuxEx = $"/home/{Environment.UserName}/.local/share/Steam/steamapps/common/Grand Theft Auto V/";
+            string windowsEx = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grand Theft Auto V";
 
-            if(Directory.Exists(linuxEX) && user_found)
+            List<string> defaultInstallations = new List<string>
             {
-                Console.WriteLine($"Folder: {linuxEX}\n");
-                Console.WriteLine("Found a linux installation would you want to use this path? (y/n)\n");
-                string choice = Console.ReadLine().ToLower();
-                logger.Log("User chose option - " + choice);
-                if (choice == "y")
-                {
-                    gta_path = linuxEX;
-                }
-                else{
-                    create_launcher("", false);
-                    return;
-                }
-                logger.Log("User chose option - " + choice);
-            }else if(Directory.Exists(windowsEX) && user_found)
+                linuxEx,
+                windowsEx,
+                $"/home/{Environment.UserName}/Games/Heroic/GTAV/",
+                "/usr/local/games/Grand Theft Auto V/",
+                "/opt/games/Grand Theft Auto V/"
+            };
+
+            if (userFound)
             {
-                Console.WriteLine($"Folder: {windowsEX}\n");
-                Console.WriteLine("Found a windows installation would you want to use this path? (y/n)\n");
-                string choice = Console.ReadLine().ToLower();
-                logger.Log("User chose option - " + choice);
-                if (choice == "y" )
+                List<string> validInstallations = defaultInstallations
+                    .Where(installationPath => File.Exists(Path.Combine(installationPath, "PlayGTAV.exe")))
+                    .ToList();
+
+                if (validInstallations.Count > 0)
                 {
-                    gta_path = windowsEX;
-                }else {
-                    create_launcher("", false);
-                    return;
+                    Console.WriteLine("Found the following Grand Theft Auto V installations");
+
+                    for (int i = 0; i < validInstallations.Count; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {validInstallations[i]}");
+                    }
+
+                    Console.WriteLine("\nEnter the number for the folder you want to use or enter 'c' to use a custom path:\n");
+                    string input = Console.ReadLine().ToLower();
+
+                    if (int.TryParse(input, out int selection) && selection >= 1 && selection <= validInstallations.Count)
+                    {
+                        gtaPath = validInstallations[selection - 1];
+                        logger.Log($"User selected option {selection} - {gtaPath}");
+                    }
+                    else if (input == "c")
+                    {
+                        CreateLauncher("", false);
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid option. Please select a valid option (1-3).");
+                        Console.WriteLine("User selected an invalid option.");
+                    }
                 }
-            }else{
+            }
+            else
+            {
                 Console.WriteLine("Enter Gta5.exe path");
-                Console.WriteLine($"Windows ex: {windowsEX}");
-                Console.WriteLine($"Linux ex: {linuxEX}\n");
-                gta_path = Console.ReadLine();
+                Console.WriteLine($"Windows ex: {windowsEx}");
+                Console.WriteLine($"Linux ex: {linuxEx}\n");
+                gtaPath = Console.ReadLine();
             }
         }
         else
         {
-            gta_path = path;
+            gtaPath = path;
         }
-        string gta_launcher = Path.Combine(gta_path, "PlayGTAV.exe");
 
-        if (File.Exists(gta_launcher))
+        string gtaLauncher = Path.Combine(gtaPath, "PlayGTAV.exe");
+
+        if (File.Exists(gtaLauncher))
         {
-            if (File.Exists(gta_path + "_PlayGTAV.exe"))
+            if (File.Exists(gtaPath + "_PlayGTAV.exe"))
             {
-                Console.WriteLine("Launcher already installed");
+                Console.WriteLine("\nLauncher already installed");
                 Console.WriteLine("Would you like to: ");
                 Console.WriteLine("1. Delete the launcher");
                 Console.WriteLine("2. Reinstall the launcher");
@@ -512,19 +530,19 @@ class Program
                 switch (choice)
                 {
                     case "1":
-                        File.Delete(gta_launcher);
-                        File.Copy(gta_path + "_PlayGTAV.exe", Path.Combine(gta_path, "PlayGTAV.exe"));
-                        File.Delete(Path.Combine(gta_path, "_PlayGTAV.exe"));
-                        Console.WriteLine("Deleted the launcher");
+                        File.Delete(gtaLauncher);
+                        File.Copy(gtaPath + "_PlayGTAV.exe", Path.Combine(gtaPath, "PlayGTAV.exe"));
+                        File.Delete(Path.Combine(gtaPath, "_PlayGTAV.exe"));
+                        Console.WriteLine("Deleted the launcher\n");
                         logger.Log("Deleted the launcher");
                         break;
                     case "2":
-                        File.Delete(gta_launcher);
-                        File.Copy(gta_path + "_PlayGTAV.exe", Path.Combine(gta_path, "PlayGTAV.exe"));
-                        File.Delete(Path.Combine(gta_path, "_PlayGTAV.exe"));
+                        File.Delete(gtaLauncher);
+                        File.Copy(gtaPath + "_PlayGTAV.exe", Path.Combine(gtaPath, "PlayGTAV.exe"));
+                        File.Delete(Path.Combine(gtaPath, "_PlayGTAV.exe"));
                         Thread.Sleep(500);
                         logger.Log("Reinstalling the launcher");
-                        create_launcher(gta_path);
+                        CreateLauncher(gtaPath);
                         break;
                     case "3":
                         Console.WriteLine("Cancelled\n");
@@ -538,10 +556,10 @@ class Program
             }
             else
             {
-                File.Copy(gta_launcher, gta_path + "_PlayGTAV.exe");
-                File.Delete(gta_launcher);
-                File.Copy(Process.GetCurrentProcess().MainModule.FileName, Path.Combine(gta_path, "PlayGTAV.exe"));
-                Console.WriteLine("Created launcher");
+                File.Copy(gtaLauncher, gtaPath + "_PlayGTAV.exe");
+                File.Delete(gtaLauncher);
+                File.Copy(Process.GetCurrentProcess().MainModule.FileName, Path.Combine(gtaPath, "PlayGTAV.exe"));
+                Console.WriteLine("Created launcher\n");
                 logger.Log("Created launcher");
                 Thread.Sleep(1000);
             }
@@ -549,19 +567,29 @@ class Program
     }
 
 
+
+
     private static Process targetProcess = null;
     static void Main(string[] args)
     {
         Program program = new Program("log.txt");
+        string exeName = Process.GetCurrentProcess().ProcessName + ".exe";
 
-        string exeName = System.AppDomain.CurrentDomain.FriendlyName;
         if (exeName == "PlayGTAV.exe")
         {
-            string exeFolder = System.AppDomain.CurrentDomain.BaseDirectory;
-            Console.WriteLine(File.Exists(Path.Combine(exeFolder, "_PlayGTAV.exe")));
+            string[] allArgs = Environment.GetCommandLineArgs();
+
+            /*for (int i = 0; i < allArgs.Length; i++)
+            {
+                Console.WriteLine($"Argument {i}: {allArgs[i]}");
+            }
+
+            Thread.Sleep(2000); -- arguments for the epic games launcher */
+
+            string exeFolder = AppDomain.CurrentDomain.BaseDirectory;
             if (File.Exists(Path.Combine(exeFolder, "_PlayGTAV.exe")))
             {
-                Process.Start(Path.Combine(exeFolder, "_PlayGTAV.exe"));
+                Process.Start(Path.Combine(exeFolder, "_PlayGTAV.exe"), string.Join(" ", allArgs.Skip(1)));
             }
         }
 
@@ -585,12 +613,12 @@ class Program
             while (true)
             {
 
-                string installed_line = check_installed() ? "Reinstall Stand" : "Install Stand";
+                string installed_line = check_installed() ? "Reinstall Stand DLL" : "Install Stand DLL";
                 string injected_line = injected ? "Reinject Stand" : "Inject Stand";
                 bool stand_exists = StandFiles();
-                Console.Title = "Stand cli - " + standFullVersion + ":" + standDllVersion;
+                Console.Title = "Stand CLI - " + standFullVersion + ":" + standDllVersion;
 
-                Console.WriteLine("Stand cli - " + standFullVersion + ":" + standDllVersion);
+                Console.WriteLine("Stand CLI - " + standFullVersion + ":" + standDllVersion);
                 Console.WriteLine("Stand DLL version - " + standDllVersion + "\n\n");
 
                 Console.WriteLine("Select an option:\n");
@@ -628,12 +656,12 @@ class Program
                         }
                         if (File.Exists(logger.logFilePath))
                         {
-                            logger.Log($"Opening Stand cli log file");
+                            logger.Log($"Opening Stand CLI log file");
                             Process.Start("notepad.exe", logger.logFilePath);
                         }
                         break;
                     case "4":
-                        create_launcher();
+                        CreateLauncher();
                         break;
                     case "5":
                         if (stand_exists)
