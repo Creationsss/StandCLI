@@ -327,7 +327,7 @@ class Program
 
         if (injected)
         {
-            Console.WriteLine("Stand is already injected. Do you want to reinject?\nthis could crash your game (y/n)");
+            Console.WriteLine("Stand is already injected. Do you want to reinject? (y/n)");
             string choice = Console.ReadLine().ToLower();
             logger.Log($"User chose to reinject Stand - " + choice);
 
@@ -476,7 +476,7 @@ class Program
                 Console.WriteLine("Found a windows installation would you want to use this path? (y/n)\n");
                 string choice = Console.ReadLine().ToLower();
                 logger.Log("User chose option - " + choice);
-                if (choice == "y")
+                if (choice == "y" )
                 {
                     gta_path = windowsEX;
                 }else {
