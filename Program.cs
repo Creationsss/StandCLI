@@ -532,12 +532,17 @@ class Program
                         Console.WriteLine("User selected an invalid option.");
                     }
                 }
+                else
+                {
+                    CreateLauncher("", false);
+                    return; 
+                }
             }
             else
             {
-                Console.WriteLine("Enter Gta5.exe path");
-                Console.WriteLine($"Windows ex: {windowsEx}");
-                Console.WriteLine($"Linux ex: {linuxEx}\n");
+                Console.WriteLine("Enter the folder containg the PlayGTAV.exe file:\n");
+                Console.WriteLine($"> Windows example: {windowsEx}");
+                Console.WriteLine($"> Linux example: {linuxEx}");
                 gtaPath = Console.ReadLine();
             }
         }

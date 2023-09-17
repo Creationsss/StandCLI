@@ -1,8 +1,10 @@
 #!/bin/sh
 
 #./build.sg -w runs wine after the build is complete
+#./build.sg -c copies the executable file next to the script
 
 current_folder="$(pwd)"
+script_name="$0" # Get the name of the running script
 dotnet_publish_command="dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true"
 dotnet_publish_output=$($dotnet_publish_command)
 
@@ -20,8 +22,13 @@ if [ $? -eq 0 ]; then
 
   if [ -n "$executable_file" ]; then
     echo "Executable file: $executable_file"
-    while getopts ":w" opt; do
+    while getopts ":wc" opt; do
       case $opt in
+        c)
+        echo "Copying the executable file next to the script..."
+        cp "$executable_file" "$current_folder/"
+        echo "Executable file copied successfully."
+          ;;
         w)
         export WINEDEBUG=-all
         wine "$executable_file"
