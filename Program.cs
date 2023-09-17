@@ -185,8 +185,6 @@ class Program
         lastLineLength = progressText.Length;
     }
 
-
-
     static bool check_installed()
     {
         logger.Log($"Checking if Stand is installed - " + File.Exists(stand_dll));
@@ -445,6 +443,31 @@ class Program
         Console.Clear();
     }
 
+    static List<string> FindGtaDirectories(string baseDirectory)
+    {
+        List<string> gtaDirectories = new List<string>();
+
+        try
+        {
+            string[] topLevelDirectories = Directory.GetDirectories(baseDirectory).Where(dir => !dir.EndsWith("lost+found")).ToArray();
+
+            foreach (string topLevelDir in topLevelDirectories)
+            {
+                string gtaPath = Path.Combine(topLevelDir, "SteamLibrary", "steamapps", "common", "Grand Theft Auto V");
+                if (Directory.Exists(gtaPath))
+                {
+                    gtaDirectories.Add(gtaPath);
+                }
+            }
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("Access denied to certain directories in the base directory.");
+        }
+
+        return gtaDirectories;
+    }
+
     static void CreateLauncher(string path = "", bool userFound = true)
     {
         Console.Clear();
@@ -454,6 +477,8 @@ class Program
         {
             string linuxEx = $"/home/{Environment.UserName}/.local/share/Steam/steamapps/common/Grand Theft Auto V/";
             string windowsEx = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grand Theft Auto V";
+            string baseDirectory = "Z:\\mnt";
+
 
             List<string> defaultInstallations = new List<string>
             {
@@ -463,6 +488,15 @@ class Program
                 "/usr/local/games/Grand Theft Auto V/",
                 "/opt/games/Grand Theft Auto V/"
             };
+
+            if (Directory.Exists(baseDirectory))
+            {
+                List<string> gtaDirectories = FindGtaDirectories(baseDirectory);
+                foreach (string gtaDir in gtaDirectories)
+                {
+                    defaultInstallations.Add(gtaDir);
+                }
+            }
 
             if (userFound)
             {
