@@ -410,7 +410,7 @@ class Program
                 }
 
                 num++;
-                Console.WriteLine("You're a Stand user now!\n");
+                Console.WriteLine("You're a Stand user now! :D\n");
                 logger.Log($"Injected Stand");
                 injected = true;
                 targetProcess = Process.GetProcessById(gta_pid);
