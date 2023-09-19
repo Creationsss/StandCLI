@@ -410,7 +410,7 @@ class Program
                 }
 
                 num++;
-                Console.WriteLine("Your a Stand user now!\n");
+                Console.WriteLine("You're a Stand user now!\n");
                 logger.Log($"Injected Stand");
                 injected = true;
                 targetProcess = Process.GetProcessById(gta_pid);
@@ -437,6 +437,8 @@ class Program
         Console.WriteLine("If you have any issues with this fork make a issue on github or dm me on discord @ Creations\n\n");
         Console.WriteLine("Known problems:");
         Console.WriteLine("> injecting before the game has fully loaded will crash your game");
+        Console.WriteLine("> Joining public sessions through RID seems to be unstable.");
+        Console.WriteLine("> Stability issues (this might not be fixable though...)");
         Console.WriteLine("\nPress any key to continue...");
         Console.ReadKey();
         Console.ResetColor();
