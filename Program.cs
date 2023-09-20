@@ -436,7 +436,7 @@ class Program
         Console.WriteLine("Im not sure if injecting stand this way is safe so use at your own risk");
         Console.WriteLine("If you have any issues with this fork make a issue on github or dm me on discord @ Creations\n\n");
         Console.WriteLine("Known problems:");
-        Console.WriteLine("> injecting before the game has fully loaded will crash your game");
+        Console.WriteLine("> injecting before the game has fully loaded will crash your game"); // was this fixed by stand? 
         Console.WriteLine("> Joining public sessions through RID seems to be unstable.");
         Console.WriteLine("> Stability issues (this might not be fixable though...)");
         Console.WriteLine("\nPress any key to continue...");
